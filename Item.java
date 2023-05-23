@@ -1,19 +1,16 @@
-class Item {
+public class Item {
     private String nome;
     private int posicaoX;
     private int posicaoY;
 
-    public Item(String nome) {
+    public Item(String nome, int posicaoX, int posicaoY) {
         this.nome = nome;
+        this.posicaoX = posicaoX;
+        this.posicaoY = posicaoY;
     }
 
     public String getNome() {
         return nome;
-    }
-
-    public void setPosicao(int x, int y) {
-        posicaoX = x;
-        posicaoY = y;
     }
 
     public int getPosicaoX() {
@@ -23,4 +20,5 @@ class Item {
     public int getPosicaoY() {
         return posicaoY;
     }
+
 }

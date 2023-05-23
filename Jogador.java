@@ -1,21 +1,40 @@
-class Jogador {
+public class Jogador {
     private String nome;
-    private Tabuleiro tabuleiro;
+    private int posicaoX;
+    private int posicaoY;
 
-    public Jogador(String nome, Tabuleiro tabuleiro) {
+    public Jogador(String nome, int posicaoX, int posicaoY) {
         this.nome = nome;
-        this.tabuleiro = tabuleiro;
+        this.posicaoX = posicaoX;
+        this.posicaoY = posicaoY;
     }
 
     public String getNome() {
         return nome;
     }
 
-    public Tabuleiro getTabuleiro() {
-        return tabuleiro;
+    public int getPosicaoX() {
+        return posicaoX;
     }
 
-    public void setPosicao(int x, int y) {
-        tabuleiro.setPosicao(x, y, 1);
+    public int getPosicaoY() {
+        return posicaoY;
     }
+
+    public void moverParaCima() {
+        posicaoX--;
+    }
+
+    public void moverParaBaixo() {
+        posicaoX++;
+    }
+
+    public void moverParaEsquerda() {
+        posicaoY--;
+    }
+
+    public void moverParaDireita() {
+        posicaoY++;
+    }
+
 }

@@ -1,19 +1,10 @@
-class FakeNews {
-    private String titulo;
+public class FakeNews {
     private int posicaoX;
     private int posicaoY;
 
-    public FakeNews(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setPosicao(int x, int y) {
-        posicaoX = x;
-        posicaoY = y;
+    public FakeNews(int posicaoX, int posicaoY) {
+        this.posicaoX = posicaoX;
+        this.posicaoY = posicaoY;
     }
 
     public int getPosicaoX() {
@@ -22,5 +13,19 @@ class FakeNews {
 
     public int getPosicaoY() {
         return posicaoY;
+    }
+
+    public void mover(){
+
+    }
+    
+    public void duplicar() {
+    }
+
+    public void colidirComJogador() {
+    }
+
+    public void eliminada(){
+        
     }
 }
