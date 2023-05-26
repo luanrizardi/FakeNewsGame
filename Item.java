@@ -1,24 +1,41 @@
+import java.util.Random;
+
 public class Item {
-    private String nome;
-    private int posicaoX;
-    private int posicaoY;
+    private int tipo;
+    private int x;
+    private int y;
 
-    public Item(String nome, int posicaoX, int posicaoY) {
-        this.nome = nome;
-        this.posicaoX = posicaoX;
-        this.posicaoY = posicaoY;
+    public Item(int tipo) {
+        Random aleatorio = new Random();
+        int x, y;
+
+        x = aleatorio.nextInt(9) + 1;
+        y = aleatorio.nextInt(9) + 1;
+
+        this.tipo = tipo;
+        this.x = x;
+        this.y = y;
     }
 
-    public String getNome() {
-        return nome;
+    public int getTipo() {
+        return tipo;
     }
 
-    public int getPosicaoX() {
-        return posicaoX;
+    public int getX() {
+        return x;
     }
 
-    public int getPosicaoY() {
-        return posicaoY;
+    public int getY() {
+        return y;
+    }
+    
+    public void duplicar() {
     }
 
+    public void colidirComJogador() {
+    }
+
+    public void eliminada(){
+        
+    }
 }

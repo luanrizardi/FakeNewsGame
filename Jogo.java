@@ -16,6 +16,6 @@ public class Jogo {
             tabuleiro.desenharTabuleiro();
             entrada = input.next();
         }
+        input.close();
     }
-
 }
