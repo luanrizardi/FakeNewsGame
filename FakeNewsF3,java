@@ -1,9 +1,0 @@
-public class FakeNewsF3 extends FakeNews {
-    public FakeNewsF3(int x, int y) {
-        super(x, y);
-    }
-
-    @Override
-    public void mover() {
-    }
-}
