@@ -4,7 +4,7 @@ public class FakeNews {
     private int tipo;
     private int x;
     private int y;
-
+    // teste commit
     public FakeNews(int tipo) {
         Random aleatorio = new Random();
         int x, y;
