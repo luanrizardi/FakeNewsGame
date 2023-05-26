@@ -5,14 +5,14 @@ public class Item {
     private int x;
     private int y;
 
-    public Item(int tipo) {
+    public Item() {
         Random aleatorio = new Random();
-        int x, y;
+        int x, y, tp;
 
+        tp = aleatorio.nextInt(4) + 1;
         x = aleatorio.nextInt(9) + 1;
         y = aleatorio.nextInt(9) + 1;
-
-        this.tipo = tipo;
+        this.tipo = tp;
         this.x = x;
         this.y = y;
     }
@@ -29,13 +29,7 @@ public class Item {
         return y;
     }
     
-    public void duplicar() {
+    public void eliminar() {
     }
 
-    public void colidirComJogador() {
-    }
-
-    public void eliminada(){
-        
-    }
 }

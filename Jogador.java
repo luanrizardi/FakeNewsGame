@@ -1,16 +1,16 @@
 public class Jogador {
-    private String nome;
+    private int num;
     private int x;
     private int y;
 
-    public Jogador(String nome, int x, int y) {
-        this.nome = nome;
+    public Jogador(int num, int x, int y) {
+        this.num = num;
         this.x = x;
         this.y = y;
     }
 
-    public String getNome() {
-        return nome;
+    public int getNum() {
+        return num;
     }
 
     public int getX() {
