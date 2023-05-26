@@ -4,19 +4,18 @@ public class Tabuleiro {
     private int largura;
     private int altura;
     private List<Jogador> jogadores;
-    private FakeNews fakeNews;
-    private Item item;
+    private List<FakeNews> fakeNews;
+    private List<Item> itens;
 
     // Construtores
-    public Tabuleiro(int largura, int altura, List<Jogador> jogadores, FakeNews fakeNews, Item item) {
+    public Tabuleiro(int largura, int altura, List<Jogador> jogadores, List<FakeNews> fakeNews, List<Item> itens) {
         // Tem que ser 5x5
         
         setLargura(largura);
         setAltura(altura);
         setJogadores(jogadores);
         setFakeNews(fakeNews);
-        setItem(item);
-
+        setItens(itens);
     }
 
     // Métodos get
@@ -32,8 +31,12 @@ public class Tabuleiro {
         return this.jogadores;
     }
 
-    public FakeNews getFakeNews() {
+    public List<FakeNews> getFakeNews() {
         return this.fakeNews;
+    }
+
+    public List<Item> getItens() {
+        return this.itens;
     }
     
     // Métodos set
@@ -49,12 +52,12 @@ public class Tabuleiro {
         this.jogadores = jogadores;
     }
 
-    public void setFakeNews(FakeNews fakeNews) {
+    public void setFakeNews(List<FakeNews> fakeNews) {
         this.fakeNews = fakeNews;
     }
 
-    public void setItem(Item item) {
-        this.item = item;
+    public void setItens(List<Item> itens) {
+        this.itens = itens;
     }
 
     public void desenharTabuleiro() {
@@ -89,18 +92,22 @@ public class Tabuleiro {
             }
         }
         // Verifique se há fakenews na posição (linha, coluna)
-        if ((fakeNews.getX()*2 - 1) == linha && (fakeNews.getY()*5 - 3) == coluna) {
-            switch(fakeNews.getTipo()){
-                case 1:
-                    return "F1";
-                case 2:
-                    return "F2";
-                case 3:
-                    return "F3";
+        for (FakeNews fake : fakeNews){
+            if ((fake.getX()*2 - 1) == linha && (fake.getY()*5 - 3) == coluna) {
+                switch(fake.getTipo()){
+                    case 1:
+                        return "F1";
+                    case 2:
+                        return "F2";
+                    case 3:
+                        return "F3";
+                }
             }
         }
-        if ((item.getX()*2 - 1) == linha && (item.getY()*5 - 3) == coluna) {
-            return "??";//jogador.getSimbolo();
+        for (Item item : itens){
+            if ((item.getX()*2 - 1) == linha && (item.getY()*5 - 3) == coluna) {
+                return "??";
+            }
         }
         // Se não houver nenhum jogador ou inimigo na posição (linha, coluna), retorne o caractere padrão
         if(coluna % 5 == 0 && linha % 2 == 0){
