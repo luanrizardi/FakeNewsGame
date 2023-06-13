@@ -9,7 +9,6 @@ public class Tabuleiro {
 
     // Construtores
     public Tabuleiro(int largura, int altura, List<Jogador> jogadores, List<FakeNews> fakeNews, List<Item> itens) {
-        // Tem que ser 5x5
         
         setLargura(largura);
         setAltura(altura);
@@ -66,9 +65,16 @@ public class Tabuleiro {
             for (int j = 0; j < 46; j++) {
                 // Obtenha o caractere a ser desenhado para a posição (i, j)
                 String caractere = obterCaractereParaPosicao(i, j);
-                if(caractere == "J1" || caractere == "J2" || caractere == "J3" || caractere == "F1" || caractere == "F2" || caractere == "F3" || caractere == "J4" || caractere == "??")
+                if(caractere == "J1" || caractere == "J2" || caractere == "F1" || caractere == "F2" || caractere == "F3" || caractere == "??")
                     j++;
-                System.out.print(caractere);
+                if(caractere == "J1" || caractere == "J2")
+                    System.out.print(Cores.ANSI_GREEN + caractere + Cores.ANSI_RESET);
+                else if (caractere == "F1" || caractere == "F2" || caractere == "F3")
+                    System.out.print(Cores.ANSI_RED + caractere + Cores.ANSI_RESET);
+                else if (caractere == "??")
+                    System.out.print(Cores.ANSI_YELLOW + caractere + Cores.ANSI_RESET);
+                else 
+                    System.out.print(caractere);
         }
         System.out.println(); 
         }
@@ -83,12 +89,8 @@ public class Tabuleiro {
                         return "J1";
                     case 2:
                         return "J2";
-                    case 3:
-                        return "J3";
-                    case 4:
-                        return "J4";
                 }
-                return "J1";//jogador.getSimbolo();
+                //return "J1";//jogador.getSimbolo();
             }
         }
         // Verifique se há fakenews na posição (linha, coluna)
@@ -125,4 +127,6 @@ public class Tabuleiro {
         else
                 return "x";
         }
+
+
 }

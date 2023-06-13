@@ -13,10 +13,16 @@ public class Jogo {
         FakeNews f1 = new FakeNews(1);
         FakeNews f2 = new FakeNews(2);
         FakeNews f3 = new FakeNews(3);
+        FakeNews f4 = new FakeNews(1);
+        FakeNews f5 = new FakeNews(2);
+        FakeNews f6 = new FakeNews(3);
         List<FakeNews> fakenews = new ArrayList<FakeNews>();
         fakenews.add(f1);
         fakenews.add(f2);
         fakenews.add(f3);
+        fakenews.add(f4);
+        fakenews.add(f5);
+        fakenews.add(f6);
 
         Item i1 = new Item();
         Item i2 = new Item();
