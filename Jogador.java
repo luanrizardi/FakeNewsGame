@@ -52,5 +52,17 @@ public class Jogador {
         }
     }
 
+    public void printarInstrucoes(Jogador jogador){
+        System.out.print("\n -------------------------------------------------------------------------");
+        System.out.print("\n| ASSIM ESTÁ O TABULEIRO. PARA ONDE DESEJA MOVER O JOGADOR " + jogador.getNum() + " ?           |");
+        System.out.print("\n| W = CIMA                                                               |");
+        System.out.print("\n| A = ESQUERDA                                                           |");
+        System.out.print("\n| S = BAIXO                                                              |");
+        System.out.print("\n| D = DIREITA                                                            |");
+        System.out.print("\n|                                                                        |");
+        System.out.print("\n| X = SAIR DO PROGRAMA                                                   |");
+        System.out.println("\n -------------------------------------------------------------------------");
+    }
+
     //item
 }
