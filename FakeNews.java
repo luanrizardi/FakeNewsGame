@@ -1,34 +1,15 @@
 import java.util.Random;
 
-public class FakeNews {
+public class FakeNews extends Objeto {
     private int tipo;
-    private int x;
-    private int y;
-    // teste commit
+
     public FakeNews(int tipo, int x, int y) {
+        super(x, y);
         this.tipo = tipo;
-        this.x = x;
-        this.y = y;
     }
 
     public int getTipo() {
         return tipo;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
     public void moverF1(){
@@ -118,7 +99,7 @@ public class FakeNews {
 
 
     }
-    
+
     public void duplicar() {
     }
 
@@ -126,6 +107,6 @@ public class FakeNews {
     }
 
     public void eliminada(){
-        
+
     }
 }

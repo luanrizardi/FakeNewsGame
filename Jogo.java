@@ -1,9 +1,9 @@
-import java.util.Scanner;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class Jogo {
-    public static void main(String args[]) {    
+    public static void main(String args[]) {
         Jogador j1 = new Jogador(1, 1, 5);
         Jogador j2 = new Jogador(2, 5, 9);
         List<Jogador> jogadores = new ArrayList<Jogador>();
@@ -24,6 +24,9 @@ public class Jogo {
         fakenews.add(f5);
         fakenews.add(f6);
 
+        List<SetorRestrito> setorRestritos = new ArrayList<SetorRestrito>();
+        //SetorRestrito s1 = new SetorRestrito(jogadores, fakenews);
+
         Item i1 = new Item();
         Item i2 = new Item();
         List<Item> itens = new ArrayList<Item>();
@@ -42,16 +45,16 @@ public class Jogo {
                 jogador.printarInstrucoes(jogador);
                 entrada = input.next();
                 jogador.mover(entrada.toUpperCase());
+                tabuleiro.verificacoes(jogadores, fakenews, itens);
                 tabuleiro.desenharTabuleiro();
             }
-            tabuleiro.verificacoes(jogadores, fakenews, itens);
             for (FakeNews fake : fakenews){
                 fake.mover();
+                tabuleiro.verificacoes(jogadores, fakenews, itens);
             }
-            tabuleiro.verificacoes(jogadores, fakenews, itens);
             tabuleiro.desenharTabuleiro();
         }
         input.close();
     }
-    
+
 }

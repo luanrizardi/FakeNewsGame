@@ -1,7 +1,5 @@
-import java.util.List;
 import java.util.Iterator;
-import java.util.Random;
-import java.util.ArrayList;
+import java.util.List;
 
 
 public class Tabuleiro {
@@ -13,7 +11,6 @@ public class Tabuleiro {
 
     // Construtores
     public Tabuleiro(int largura, int altura, List<Jogador> jogadores, List<FakeNews> fakeNews, List<Item> itens) {
-        
         setLargura(largura);
         setAltura(altura);
         setJogadores(jogadores);
@@ -25,11 +22,11 @@ public class Tabuleiro {
     public int getLargura() {
         return this.largura;
     }
-    
+
     public int getAltura() {
         return this.altura;
     }
-    
+
     public List<Jogador> getJogadores() {
         return this.jogadores;
     }
@@ -41,12 +38,12 @@ public class Tabuleiro {
     public List<Item> getItens() {
         return this.itens;
     }
-    
+
     // Métodos set
     public void setLargura(int largura){
         this.largura = largura;
     }
-    
+
     public void setAltura(int altura) {
         this.altura = altura;
     }
@@ -67,10 +64,10 @@ public class Tabuleiro {
         Iterator<FakeNews> iterator = fakeNewsList.iterator();
         while (iterator.hasNext()) {
             FakeNews fakeNews = iterator.next();
-            
+
             int x = fakeNews.getX();
             int y = fakeNews.getY();
-            
+
             if (x <= 0 || x > 9 || y <= 0 || y > 9) {
                 iterator.remove();
                 System.out.println(Cores.ANSI_RED + "Fake News do tipo " + fakeNews.getTipo() + " foi destruída!" + Cores.ANSI_RESET);
@@ -111,7 +108,7 @@ public class Tabuleiro {
                 }
             }
     }
-    
+
 
 
 
@@ -129,13 +126,13 @@ public class Tabuleiro {
                     System.out.print(Cores.ANSI_RED + caractere + Cores.ANSI_RESET);
                 else if (caractere == "??")
                     System.out.print(Cores.ANSI_YELLOW + caractere + Cores.ANSI_RESET);
-                else 
+                else
                     System.out.print(caractere);
         }
-        System.out.println(); 
+        System.out.println();
         }
     }
-   
+
     private String obterCaractereParaPosicao(int linha, int coluna) {
         // Verifique se há algum jogador na posição (linha, coluna)
         for (Jogador jogador : jogadores) {
@@ -203,10 +200,10 @@ public class Tabuleiro {
         Iterator<FakeNews> iterator = fakeNews.iterator();
         while (iterator.hasNext()) {
             FakeNews fakenews = iterator.next();
-            
+
             int x = fakenews.getX();
             int y = fakenews.getY();
-            
+
             if (x <= 0 || x > 9 || y <= 0 || y > 9) {
                 iterator.remove();
                 System.out.println(Cores.ANSI_RED + "Fake News do tipo " + fakenews.getTipo() + " foi destruída!" + Cores.ANSI_RESET);
@@ -216,8 +213,3 @@ public class Tabuleiro {
 
 
 }
-        
-    
-
-
-
