@@ -5,13 +5,7 @@ public class FakeNews {
     private int x;
     private int y;
     // teste commit
-    public FakeNews(int tipo) {
-        Random aleatorio = new Random();
-        int x, y;
-
-        x = aleatorio.nextInt(9) + 1;
-        y = aleatorio.nextInt(9) + 1;
-
+    public FakeNews(int tipo, int x, int y) {
         this.tipo = tipo;
         this.x = x;
         this.y = y;
