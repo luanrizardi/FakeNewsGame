@@ -73,43 +73,46 @@ public class Tabuleiro {
             
             if (x <= 0 || x > 9 || y <= 0 || y > 9) {
                 iterator.remove();
-                System.out.println("Fake News do tipo " + fakeNews.getTipo() + " foi destruída!");
+                System.out.println(Cores.ANSI_RED + "Fake News do tipo " + fakeNews.getTipo() + " foi destruída!" + Cores.ANSI_RESET);
             }
         }
     }
 
-    public void duplicarFakeNews() {
-    for (Item item : itens) {
-        for (FakeNews fakenews : fakeNews)
-        if (fakenews.getX() == item.getX() && fakenews.getY() == item.getY()) {
-            // Verificar as oito posições adjacentes
-            for (int i = -1; i <= 1; i++) {
-                for (int j = -1; j <= 1; j++) {
-                    int novaX = fakenews.getX() + i;
-                    int novaY = fakenews.getY() + j;
+    public void duplicarFakeNews(List<FakeNews> fakeNews) {
+          for (Item item : itens) {
+            for (FakeNews fakenews : fakeNews)
+                if (fakenews.getX() == item.getX() && fakenews.getY() == item.getY()) {
+                     // Verificar as oito posições adjacentes
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                int novaX = fakenews.getX() + i;
+                int novaY = fakenews.getY() + j;
 
-                    // Verificar se a posição adjacente está livre
+                // Verificar se a posição adjacente está livre
                     boolean posicaoLivre = true;
-                    for (FakeNews outraFakeNews : fakeNews) {
+                    Iterator<FakeNews> iterator = fakeNews.iterator();
+                    while (iterator.hasNext()) {
+                    FakeNews outraFakeNews = iterator.next();
                         if (outraFakeNews.getX() == novaX && outraFakeNews.getY() == novaY) {
                             posicaoLivre = false;
                             break;
                         }
                     }
-
                     // Se a posição estiver livre, criar uma nova Fake News duplicada
                     if (posicaoLivre) {
                         int tipoFakeNews = fakenews.getTipo();
                         FakeNews novaFakeNews = new FakeNews(tipoFakeNews, novaX, novaY);
                         fakeNews.add(novaFakeNews);
-                        System.out.println("A Fake News foi duplicada na posição (" + novaX + ", " + novaY + ").");
+                        System.out.println(Cores.ANSI_RED + "A Fake News " + tipoFakeNews + " foi duplicada na posição (" + novaX + ", " + novaY + ")." + Cores.ANSI_RESET);
                         return;
                     }
                 }
-            }
         }
+                }
+            }
     }
-}
+    
+
 
 
     public void desenharTabuleiro() {
@@ -181,5 +184,40 @@ public class Tabuleiro {
                 return "x";
         }
 
+    public void eliminarJogador(List<Jogador> jogadores) {
+        Iterator<Jogador> iterator = jogadores.iterator();
+        while (iterator.hasNext()){
+            Jogador jogador = iterator.next();
+            for (FakeNews fakenews : fakeNews)
+                if (fakenews.getX() == jogador.getX() && fakenews.getY() == jogador.getY()) {
+                    // eliminar jogador
+                        System.out.println(Cores.ANSI_GREEN + "O Jogador " + jogador.getNum() + " foi eliminado." + Cores.ANSI_RESET);
+                        iterator.remove();
+                    }
+        }
+    }
+
+    public void verificacoes(List<Jogador> jogadores, List<FakeNews> fakeNews, List<Item> itens){
+        eliminarJogador(jogadores);
+        duplicarFakeNews(fakeNews);
+        Iterator<FakeNews> iterator = fakeNews.iterator();
+        while (iterator.hasNext()) {
+            FakeNews fakenews = iterator.next();
+            
+            int x = fakenews.getX();
+            int y = fakenews.getY();
+            
+            if (x <= 0 || x > 9 || y <= 0 || y > 9) {
+                iterator.remove();
+                System.out.println(Cores.ANSI_RED + "Fake News do tipo " + fakenews.getTipo() + " foi destruída!" + Cores.ANSI_RESET);
+            }
+        }
+        }
+
 
 }
+        
+    
+
+
+

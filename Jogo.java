@@ -44,11 +44,11 @@ public class Jogo {
                 jogador.mover(entrada.toUpperCase());
                 tabuleiro.desenharTabuleiro();
             }
+            tabuleiro.verificacoes(jogadores, fakenews, itens);
             for (FakeNews fake : fakenews){
                 fake.mover();
             }
-            tabuleiro.duplicarFakeNews();
-            tabuleiro.destruirFakeNewsForaDoTabuleiro(fakenews);
+            tabuleiro.verificacoes(jogadores, fakenews, itens);
             tabuleiro.desenharTabuleiro();
         }
         input.close();
