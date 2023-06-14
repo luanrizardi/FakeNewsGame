@@ -1,4 +1,8 @@
 import java.util.List;
+import java.util.Iterator;
+import java.util.Random;
+import java.util.ArrayList;
+
 
 public class Tabuleiro {
     private int largura;
@@ -58,6 +62,55 @@ public class Tabuleiro {
     public void setItens(List<Item> itens) {
         this.itens = itens;
     }
+
+    public void destruirFakeNewsForaDoTabuleiro(List<FakeNews> fakeNewsList) {
+        Iterator<FakeNews> iterator = fakeNewsList.iterator();
+        while (iterator.hasNext()) {
+            FakeNews fakeNews = iterator.next();
+            
+            int x = fakeNews.getX();
+            int y = fakeNews.getY();
+            
+            if (x <= 0 || x > 9 || y <= 0 || y > 9) {
+                iterator.remove();
+                System.out.println("Fake News do tipo " + fakeNews.getTipo() + " foi destruída!");
+            }
+        }
+    }
+
+    public void duplicarFakeNews() {
+    for (Item item : itens) {
+        for (FakeNews fakenews : fakeNews)
+        if (fakenews.getX() == item.getX() && fakenews.getY() == item.getY()) {
+            // Verificar as oito posições adjacentes
+            for (int i = -1; i <= 1; i++) {
+                for (int j = -1; j <= 1; j++) {
+                    int novaX = fakenews.getX() + i;
+                    int novaY = fakenews.getY() + j;
+
+                    // Verificar se a posição adjacente está livre
+                    boolean posicaoLivre = true;
+                    for (FakeNews outraFakeNews : fakeNews) {
+                        if (outraFakeNews.getX() == novaX && outraFakeNews.getY() == novaY) {
+                            posicaoLivre = false;
+                            break;
+                        }
+                    }
+
+                    // Se a posição estiver livre, criar uma nova Fake News duplicada
+                    if (posicaoLivre) {
+                        int tipoFakeNews = fakenews.getTipo();
+                        FakeNews novaFakeNews = new FakeNews(tipoFakeNews, novaX, novaY);
+                        fakeNews.add(novaFakeNews);
+                        System.out.println("A Fake News foi duplicada na posição (" + novaX + ", " + novaY + ").");
+                        return;
+                    }
+                }
+            }
+        }
+    }
+}
+
 
     public void desenharTabuleiro() {
         System.out.println("Desenhando tabuleiro:");
