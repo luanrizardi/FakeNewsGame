@@ -10,12 +10,12 @@ public class Jogo {
         jogadores.add(j1);
         jogadores.add(j2);
 
-        FakeNews f1 = new FakeNews(1);
-        FakeNews f2 = new FakeNews(2);
-        FakeNews f3 = new FakeNews(3);
-        FakeNews f4 = new FakeNews(1);
-        FakeNews f5 = new FakeNews(2);
-        FakeNews f6 = new FakeNews(3);
+        FakeNews f1 = new FakeNews(1, 3, 8);
+        FakeNews f2 = new FakeNews(2, 5, 3);
+        FakeNews f3 = new FakeNews(3, 4, 3);
+        FakeNews f4 = new FakeNews(1, 8, 4);
+        FakeNews f5 = new FakeNews(2, 7, 5);
+        FakeNews f6 = new FakeNews(3, 5, 4);
         List<FakeNews> fakenews = new ArrayList<FakeNews>();
         fakenews.add(f1);
         fakenews.add(f2);
@@ -39,6 +39,7 @@ public class Jogo {
 
         while(!entrada.toUpperCase().equals("X")) {
             for (Jogador jogador : jogadores){
+                jogador.printarInstrucoes(jogador);
                 entrada = input.next();
                 jogador.mover(entrada.toUpperCase());
                 tabuleiro.desenharTabuleiro();
@@ -46,8 +47,11 @@ public class Jogo {
             for (FakeNews fake : fakenews){
                 fake.mover();
             }
+            tabuleiro.duplicarFakeNews();
+            tabuleiro.destruirFakeNewsForaDoTabuleiro(fakenews);
             tabuleiro.desenharTabuleiro();
         }
         input.close();
     }
+    
 }
