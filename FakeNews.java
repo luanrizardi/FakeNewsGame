@@ -96,17 +96,5 @@ public class FakeNews extends Objeto {
         else if(this.tipo == 3){
             moverF3();
         }
-
-
-    }
-
-    public void duplicar() {
-    }
-
-    public void colidirComJogador() {
-    }
-
-    public void eliminada(){
-
     }
 }

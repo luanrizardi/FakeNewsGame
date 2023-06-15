@@ -70,11 +70,20 @@ public class Jogo {
                 jogador.mover(entrada.toUpperCase());
                 tabuleiro.desenharTabuleiro();
             }
-            tabuleiro.verificacoes(jogadores, fakenews, itens);
+            tabuleiro.verificacoes(jogadores, fakenews, itens, setoresRestritos);
             for (FakeNews fake : fakenews){
                 fake.mover();
+                System.out.println("Fake News " + fake.getTipo() + " se moveu para: " + fake.getX() + ", " + fake.getY());
+
+                // Pausa a execução por 2 segundos
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-            tabuleiro.verificacoes(jogadores, fakenews, itens);
+            
+            tabuleiro.verificacoes(jogadores, fakenews, itens, setoresRestritos);
             tabuleiro.desenharTabuleiro();
             turnos++;
         }

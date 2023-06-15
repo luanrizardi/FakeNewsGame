@@ -197,21 +197,28 @@ public class Tabuleiro {
                 return "x";
         }
 
-    public void eliminarJogador(List<Jogador> jogadores) {
+    public void eliminarJogador(List<Jogador> jogadores, List<SetorRestrito> setores) {
         Iterator<Jogador> iterator = jogadores.iterator();
         while (iterator.hasNext()){
             Jogador jogador = iterator.next();
-            for (FakeNews fakenews : fakeNews)
+                for (FakeNews fakenews : fakeNews){
                 if (fakenews.getX() == jogador.getX() && fakenews.getY() == jogador.getY()) {
                     // eliminar jogador
                         System.out.println(Cores.ANSI_GREEN + "O Jogador " + jogador.getNum() + " foi eliminado." + Cores.ANSI_RESET);
                         iterator.remove();
                     }
-        }
+                }
+                for (SetorRestrito setor : setores){
+                if (setor.getX() == jogador.getX() && setor.getY() == jogador.getY()) {
+                    // eliminar jogador
+                        System.out.println(Cores.ANSI_GREEN + "O Jogador " + jogador.getNum() + " foi eliminado." + Cores.ANSI_RESET);
+                        iterator.remove();
+                    }
+                }
     }
-
-    public void verificacoes(List<Jogador> jogadores, List<FakeNews> fakeNews, List<Item> itens){
-        eliminarJogador(jogadores);
+}
+    public void verificacoes(List<Jogador> jogadores, List<FakeNews> fakeNews, List<Item> itens, List<SetorRestrito> setores){
+        eliminarJogador(jogadores, setores);
         duplicarFakeNews(fakeNews);
         Iterator<FakeNews> iterator = fakeNews.iterator();
         while (iterator.hasNext()) {
@@ -224,6 +231,15 @@ public class Tabuleiro {
                 iterator.remove();
                 System.out.println(Cores.ANSI_RED + "Fake News do tipo " + fakenews.getTipo() + " foi destruída!" + Cores.ANSI_RESET);
             }
+            for (SetorRestrito setor : setores){
+                if (setor.getX() == x && setor.getY() == y) {
+                    // eliminar fakenews
+                        System.out.println(Cores.ANSI_RED + "Fake News do tipo " + fakenews.getTipo() + " foi destruída!" + Cores.ANSI_RESET);
+                        iterator.remove();
+                    }
+                }
+            
+            
         }
         }
 
