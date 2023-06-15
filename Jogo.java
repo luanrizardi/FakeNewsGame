@@ -24,8 +24,15 @@ public class Jogo {
         fakenews.add(f5);
         fakenews.add(f6);
 
-        List<SetorRestrito> setorRestritos = new ArrayList<SetorRestrito>();
-        //SetorRestrito s1 = new SetorRestrito(jogadores, fakenews);
+        SetorRestrito s1 = new SetorRestrito();
+        SetorRestrito s2 = new SetorRestrito();
+        SetorRestrito s3 = new SetorRestrito();
+        SetorRestrito s4 = new SetorRestrito();
+        List<SetorRestrito> setoresRestritos = new ArrayList<SetorRestrito>();
+        setoresRestritos.add(s1);
+        setoresRestritos.add(s2);
+        setoresRestritos.add(s3);
+        setoresRestritos.add(s4);
 
         Item i1 = new Item();
         Item i2 = new Item();
@@ -33,7 +40,7 @@ public class Jogo {
         itens.add(i1);
         itens.add(i2);
 
-        Tabuleiro tabuleiro = new Tabuleiro(9, 9, jogadores, fakenews, itens);
+        Tabuleiro tabuleiro = new Tabuleiro(9, 9, jogadores, fakenews, itens, setoresRestritos);
         tabuleiro.desenharTabuleiro();
         Scanner input = new Scanner(System.in);
 

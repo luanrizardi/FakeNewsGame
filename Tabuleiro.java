@@ -8,14 +8,16 @@ public class Tabuleiro {
     private List<Jogador> jogadores;
     private List<FakeNews> fakeNews;
     private List<Item> itens;
+    private List<SetorRestrito> setores;
 
     // Construtores
-    public Tabuleiro(int largura, int altura, List<Jogador> jogadores, List<FakeNews> fakeNews, List<Item> itens) {
+    public Tabuleiro(int largura, int altura, List<Jogador> jogadores, List<FakeNews> fakeNews, List<Item> itens, List<SetorRestrito> setores) {
         setLargura(largura);
         setAltura(altura);
         setJogadores(jogadores);
         setFakeNews(fakeNews);
         setItens(itens);
+        setSetores(setores);
     }
 
     // Métodos get
@@ -39,6 +41,10 @@ public class Tabuleiro {
         return this.itens;
     }
 
+    public List<SetorRestrito> getSetores() {
+        return this.setores;
+    }
+
     // Métodos set
     public void setLargura(int largura){
         this.largura = largura;
@@ -58,6 +64,10 @@ public class Tabuleiro {
 
     public void setItens(List<Item> itens) {
         this.itens = itens;
+    }
+
+    public void setSetores(List<SetorRestrito> setores) {
+        this.setores = setores;
     }
 
     public void destruirFakeNewsForaDoTabuleiro(List<FakeNews> fakeNewsList) {
@@ -118,7 +128,7 @@ public class Tabuleiro {
             for (int j = 0; j < 46; j++) {
                 // Obtenha o caractere a ser desenhado para a posição (i, j)
                 String caractere = obterCaractereParaPosicao(i, j);
-                if(caractere == "J1" || caractere == "J2" || caractere == "F1" || caractere == "F2" || caractere == "F3" || caractere == "??")
+                if(caractere == "J1" || caractere == "J2" || caractere == "F1" || caractere == "F2" || caractere == "F3" || caractere == "??" || caractere == "XX")
                     j++;
                 if(caractere == "J1" || caractere == "J2")
                     System.out.print(Cores.ANSI_GREEN + caractere + Cores.ANSI_RESET);
@@ -162,6 +172,12 @@ public class Tabuleiro {
         for (Item item : itens){
             if ((item.getX()*2 - 1) == linha && (item.getY()*5 - 3) == coluna) {
                 return "??";
+            }
+        }
+
+        for (SetorRestrito setor : setores){
+            if ((setor.getX()*2 - 1) == linha && (setor.getY()*5 - 3) == coluna) {
+                return "XX";
             }
         }
         // Se não houver nenhum jogador ou inimigo na posição (linha, coluna), retorne o caractere padrão
