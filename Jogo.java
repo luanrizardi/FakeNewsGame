@@ -45,13 +45,13 @@ public class Jogo {
                 jogador.printarInstrucoes(jogador);
                 entrada = input.next();
                 jogador.mover(entrada.toUpperCase());
-                tabuleiro.verificacoes(jogadores, fakenews, itens);
                 tabuleiro.desenharTabuleiro();
             }
+            tabuleiro.verificacoes(jogadores, fakenews, itens);
             for (FakeNews fake : fakenews){
                 fake.mover();
-                tabuleiro.verificacoes(jogadores, fakenews, itens);
             }
+            tabuleiro.verificacoes(jogadores, fakenews, itens);
             tabuleiro.desenharTabuleiro();
         }
         input.close();
