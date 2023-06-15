@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Random;
 
 public class FakeNews extends Objeto {
@@ -8,93 +9,121 @@ public class FakeNews extends Objeto {
         this.tipo = tipo;
     }
 
+    // public Objeto(List<Objeto> objetos) {
+    // boolean unico = false;
+    // while (!unico) {
+    // unico = true;
+    // this.x = generateRandom();
+    // this.y = generateRandom();
+    // for (Objeto objeto : objetos) {
+    // if (objeto.getX() == x && objeto.getY() == y)
+    // unico = false;
+    // }
+    // }
+    // }
+
+    public FakeNews(List<Objeto> objetos) {
+        boolean unico = false;
+        while (!unico) {
+            unico = true;
+            setX(gerarPosicaoAleatoria());
+            setY(gerarPosicaoAleatoria());
+            for (Objeto objeto : objetos) {
+                if (objeto.getX() == getX() && objeto.getY() == getY())
+                    unico = false;
+            }
+        }
+        this.tipo = gerarTipoAleatorio();
+    }
+
     public int getTipo() {
         return tipo;
     }
 
-    public void moverF1(){
+    private static int gerarPosicaoAleatoria() {
         Random aleatorio = new Random();
-        int tp = aleatorio.nextInt(4) + 1;
-        int novaLinha = getX();
-        int novaColuna = getY();
+        return aleatorio.nextInt(7) + 2;
+    }
 
-        switch(tp){
+    private static int gerarTipoAleatorio() {
+        Random aleatorio = new Random();
+        return aleatorio.nextInt(2) + 1;
+    }
+
+    public void moverF1() {
+        Random aleatorio = new Random();
+        int tp = aleatorio.nextInt(4);
+
+        switch (tp) {
+            case 0:
+                setY(getY() + 1);
+                break;
             case 1:
-                novaColuna++;
-                setY(novaColuna);
+                setY(getY() + 1);
+                break;
             case 2:
-                novaColuna--;
-                setY(novaColuna);
+                setX(getX() + 1);
+                break;
             case 3:
-                novaLinha++;
-                setX(novaLinha);
-            case 4:
-                novaLinha--;
-                setX(novaLinha);
+                setX(getX() + 1);
+                break;
         }
     }
 
-    public void moverF2(){
+    public void moverF2() {
         Random aleatorio = new Random();
-        int tp = aleatorio.nextInt(4) + 1;
-        int novaLinha = getX();
-        int novaColuna = getY();
+        int tp = aleatorio.nextInt(4);
 
-        switch(tp){
+        switch (tp) {
+            case 0:
+                setY(getY() + 2);
+                break;
             case 1:
-                novaColuna = novaColuna + 2;
-                setY(novaColuna);
+                setY(getY() - 2);
+                break;
             case 2:
-                novaColuna = novaColuna - 2;
-                setY(novaColuna);
+                setX(getX() + 2);
+                break;
             case 3:
-                novaLinha = novaLinha + 2;
-                setX(novaLinha);
-            case 4:
-                novaLinha = novaLinha - 2;
-                setX(novaLinha);
+                setX(getX() - 2);
+                break;
         }
     }
 
-    public void moverF3(){
+    public void moverF3() {
         Random aleatorio = new Random();
-        int tp = aleatorio.nextInt(4) + 1;
-        int novaLinha = getX();
-        int novaColuna = getY();
+        int tp = aleatorio.nextInt(4);
 
-        switch(tp){
+        switch (tp) {
+            case 0:
+                setY(getY() + 1);
+                setX(getX() + 1);
+                break;
             case 1:
-                novaColuna++;
-                novaLinha++;
-                setY(novaColuna);
-                setX(novaLinha);
+                setY(getY() + 1);
+                setX(getX() - 1);
+                break;
             case 2:
-                novaColuna++;
-                novaLinha--;
-                setY(novaColuna);
-                setX(novaLinha);
+                setY(getY() - 1);
+                setX(getX() + 1);
+                break;
             case 3:
-                novaColuna--;
-                novaLinha++;
-                setY(novaColuna);
-                setX(novaLinha);
-            case 4:
-                novaColuna--;
-                novaLinha--;
-                setY(novaColuna);
-                setX(novaLinha);
+                setY(getY() - 1);
+                setX(getX() - 1);
+                break;
         }
     }
 
-    public void mover(){
-        if (this.tipo == 1){
-            moverF1();
-        }
-        else if(this.tipo == 2){
-            moverF2();
-        }
-        else if(this.tipo == 3){
-            moverF3();
+    public void mover() {
+        switch (tipo) {
+            case 1:
+                moverF1();
+                break;
+            case 2:
+                moverF2();
+                break;
+            case 3:
+                moverF3();
         }
     }
 }

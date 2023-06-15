@@ -10,79 +10,67 @@ public class Jogo {
         jogadores.add(j1);
         jogadores.add(j2);
 
-        FakeNews f1 = new FakeNews(1, 3, 8);
-        FakeNews f2 = new FakeNews(2, 5, 3);
-        FakeNews f3 = new FakeNews(3, 4, 3);
-        FakeNews f4 = new FakeNews(1, 8, 4);
-        FakeNews f5 = new FakeNews(2, 7, 5);
-        FakeNews f6 = new FakeNews(3, 5, 4);
+        List<Objeto> objetos = new ArrayList<Objeto>();
+        for (Objeto jogador : jogadores) {
+            objetos.add(jogador);
+        }
+
         List<FakeNews> fakenews = new ArrayList<FakeNews>();
-        fakenews.add(f1);
-        fakenews.add(f2);
-        fakenews.add(f3);
-        fakenews.add(f4);
-        fakenews.add(f5);
-        fakenews.add(f6);
+        for (int i = 0; i < 6; i++) {
+            FakeNews f = new FakeNews(objetos);
+            objetos.add(f);
+            fakenews.add(f);
+        }
 
-        SetorRestrito s1 = new SetorRestrito();
-        SetorRestrito s2 = new SetorRestrito();
-        SetorRestrito s3 = new SetorRestrito();
-        SetorRestrito s4 = new SetorRestrito();
         List<SetorRestrito> setoresRestritos = new ArrayList<SetorRestrito>();
-        setoresRestritos.add(s1);
-        setoresRestritos.add(s2);
-        setoresRestritos.add(s3);
-        setoresRestritos.add(s4);
+        for (int i = 0; i < 4; i++) {
+            SetorRestrito s = new SetorRestrito(objetos);
+            objetos.add(s);
+            setoresRestritos.add(s);
+        }
 
-        Item i1 = new Item();
-        Item i2 = new Item();
         List<Item> itens = new ArrayList<Item>();
-        itens.add(i1);
-        itens.add(i2);
+        for (int i = 0; i < 2; i++) {
+            Item item = new Item(objetos);
+            objetos.add(item);
+            itens.add(item);
+        }
 
-        Tabuleiro tabuleiro = new Tabuleiro(9, 9, jogadores, fakenews, itens, setoresRestritos);
+        Tabuleiro tabuleiro = new Tabuleiro(jogadores, fakenews, itens, setoresRestritos);
         tabuleiro.desenharTabuleiro();
         Scanner input = new Scanner(System.in);
 
         String entrada = "NULL";
-        //entrada = input.next();
+        // entrada = input.next();
         int turnos = 1;
-        while(!entrada.toUpperCase().equals("X")) {
+        while (!entrada.toUpperCase().equals("X")) {
 
-            if(fakenews.size() == 0){
+            if (fakenews.size() == 0) {
                 System.out.println("VOCÊS GANHARAM!!!");
                 break;
             }
 
-            if(jogadores.size() == 0){
+            if (jogadores.size() == 0) {
                 System.out.println("VOCÊS PERDERAM!!!");
                 break;
             }
 
-            if(turnos > 21){
+            if (turnos > 21) {
                 System.out.println("OS TURNOS ACABARAM VOCÊS PERDERAM!!!");
                 break;
             }
 
-            for (Jogador jogador : jogadores){
+            for (Jogador jogador : tabuleiro.getJogadores()) {
                 jogador.printarInstrucoes(jogador, turnos);
                 entrada = input.next();
                 jogador.mover(entrada.toUpperCase());
                 tabuleiro.desenharTabuleiro();
             }
-            tabuleiro.verificacoes(jogadores, fakenews, itens, setoresRestritos);
-            for (FakeNews fake : fakenews){
-                fake.mover();
-                System.out.println("Fake News " + fake.getTipo() + " se moveu para: " + fake.getX() + ", " + fake.getY());
 
-                // Pausa a execução por 2 segundos
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            
+            objetos = tabuleiro.getObjetos();
+
+            tabuleiro.verificacoes(jogadores, fakenews, itens, setoresRestritos);
+            tabuleiro.moverFakeNews();
             tabuleiro.verificacoes(jogadores, fakenews, itens, setoresRestritos);
             tabuleiro.desenharTabuleiro();
             turnos++;

@@ -1,24 +1,15 @@
+import java.util.List;
 import java.util.Random;
 
 public class Item extends Objeto {
     private int tipo;
 
-    public Item() {
-        super(generateRandomX(), generateRandomY());
-        this.tipo = generateRandomTipo();
+    public Item(List<Objeto> objetos) {
+        super(objetos);
+        this.tipo = gerarTipoAleatorio();
     }
 
-    private static int generateRandomX() {
-        Random aleatorio = new Random();
-        return aleatorio.nextInt(9) + 1;
-    }
-
-    private static int generateRandomY() {
-        Random aleatorio = new Random();
-        return aleatorio.nextInt(9) + 1;
-    }
-
-    private static int generateRandomTipo() {
+    private static int gerarTipoAleatorio() {
         Random aleatorio = new Random();
         return aleatorio.nextInt(4) + 1;
     }
@@ -26,8 +17,4 @@ public class Item extends Objeto {
     public int getTipo() {
         return tipo;
     }
-
-    public void eliminar() {
-    }
-
 }

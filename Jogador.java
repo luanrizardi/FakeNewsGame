@@ -10,7 +10,7 @@ public class Jogador extends Objeto {
         return num;
     }
 
-    public void mover(String direcao){
+    public void mover(String direcao) {
         int novaLinha = getX();
         int novaColuna = getY();
         switch (direcao) {
@@ -33,10 +33,11 @@ public class Jogador extends Objeto {
         }
     }
 
-    public void printarInstrucoes(Jogador jogador, int turnos){
+    public void printarInstrucoes(Jogador jogador, int turnos) {
         System.out.print("\n -------------------------------------------------------------------------");
         System.out.print("\n| TURNO " + turnos + "                                                                |");
-        System.out.print("\n| ASSIM ESTÁ O TABULEIRO. PARA ONDE DESEJA MOVER O JOGADOR " + jogador.getNum() + " ?           |");
+        System.out.print(
+                "\n| ASSIM ESTÁ O TABULEIRO. PARA ONDE DESEJA MOVER O JOGADOR " + jogador.getNum() + " ?           |");
         System.out.print("\n| W = CIMA                                                               |");
         System.out.print("\n| A = ESQUERDA                                                           |");
         System.out.print("\n| S = BAIXO                                                              |");
@@ -46,5 +47,5 @@ public class Jogador extends Objeto {
         System.out.println("\n -------------------------------------------------------------------------");
     }
 
-    //item
+    // item
 }
