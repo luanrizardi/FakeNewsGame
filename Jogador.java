@@ -33,8 +33,9 @@ public class Jogador extends Objeto {
         }
     }
 
-    public void printarInstrucoes(Jogador jogador){
+    public void printarInstrucoes(Jogador jogador, int turnos){
         System.out.print("\n -------------------------------------------------------------------------");
+        System.out.print("\n| TURNO " + turnos + "                                                                |");
         System.out.print("\n| ASSIM ESTÁ O TABULEIRO. PARA ONDE DESEJA MOVER O JOGADOR " + jogador.getNum() + " ?           |");
         System.out.print("\n| W = CIMA                                                               |");
         System.out.print("\n| A = ESQUERDA                                                           |");

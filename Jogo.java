@@ -46,10 +46,26 @@ public class Jogo {
 
         String entrada = "NULL";
         //entrada = input.next();
-
+        int turnos = 1;
         while(!entrada.toUpperCase().equals("X")) {
+
+            if(fakenews.size() == 0){
+                System.out.println("VOCÊS GANHARAM!!!");
+                break;
+            }
+
+            if(jogadores.size() == 0){
+                System.out.println("VOCÊS PERDERAM!!!");
+                break;
+            }
+
+            if(turnos > 21){
+                System.out.println("OS TURNOS ACABARAM VOCÊS PERDERAM!!!");
+                break;
+            }
+
             for (Jogador jogador : jogadores){
-                jogador.printarInstrucoes(jogador);
+                jogador.printarInstrucoes(jogador, turnos);
                 entrada = input.next();
                 jogador.mover(entrada.toUpperCase());
                 tabuleiro.desenharTabuleiro();
@@ -60,6 +76,7 @@ public class Jogo {
             }
             tabuleiro.verificacoes(jogadores, fakenews, itens);
             tabuleiro.desenharTabuleiro();
+            turnos++;
         }
         input.close();
     }
