@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 
 public class Tabuleiro {
     private int largura;
@@ -72,22 +73,12 @@ public class Tabuleiro {
     }
 
     public List<Objeto> getObjetos() {
-        List<Objeto> objetos = new ArrayList<Objeto>();
-        for (Objeto jogador : jogadores) {
-            objetos.add(jogador);
-        }
+        List<Objeto> objetos = new ArrayList<>();
 
-        for (Objeto fk : fakeNews) {
-            objetos.add(fk);
-        }
-
-        for (Objeto s : setores) {
-            objetos.add(s);
-        }
-
-        for (Objeto i : itens) {
-            objetos.add(i);
-        }
+        objetos.addAll(jogadores);
+        objetos.addAll(fakeNews);
+        objetos.addAll(setores);
+        objetos.addAll(itens);
 
         return objetos;
     }
@@ -109,8 +100,10 @@ public class Tabuleiro {
     }
 
     public void duplicarFakeNews() {
-        for (Item item : itens) {
-            for (FakeNews fakenews : fakeNews)
+        Iterator<Item> iterator = itens.iterator();
+        while (iterator.hasNext()) {
+            Item item = iterator.next();
+            for (FakeNews fakenews : fakeNews) {
                 if (fakenews.getX() == item.getX() && fakenews.getY() == item.getY()) {
                     // Verificar as oito posições adjacentes
                     for (int i = -1; i <= 1; i++) {
@@ -118,18 +111,20 @@ public class Tabuleiro {
                             int novaX = fakenews.getX() + i;
                             int novaY = fakenews.getY() + j;
                             boolean posicaoLivre = true;
-                            // Verificar se a posicao nao esta fora do tabuleiro
-                            if ((novaX > 0 && novaX < 10) && (novaY > 0 && novaY < 10))
+
+                            // Verificar se a posição não está fora do tabuleiro
+                            if ((novaX > 0 && novaX < 10) && (novaY > 0 && novaY < 10)) {
                                 posicaoLivre = true;
-                            // Verificar se a posição adjacente está livre
-                            Iterator<FakeNews> iterator = fakeNews.iterator();
-                            while (iterator.hasNext()) {
-                                FakeNews outraFakeNews = iterator.next();
-                                if (outraFakeNews.getX() == novaX && outraFakeNews.getY() == novaY) {
-                                    posicaoLivre = false;
-                                    break;
-                                }
                             }
+
+                            // Verificar se a posição adjacente está livre
+                            boolean posicaoOcupada = fakeNews.stream()
+                                    .anyMatch(fn -> fn.getX() == novaX && fn.getY() == novaY);
+
+                            if (posicaoOcupada) {
+                                posicaoLivre = false;
+                            }
+
                             // Se a posição estiver livre, criar uma nova Fake News duplicada
                             if (posicaoLivre) {
                                 int tipoFakeNews = fakenews.getTipo();
@@ -138,11 +133,15 @@ public class Tabuleiro {
                                 System.out.println(
                                         Cores.ANSI_RED + "A Fake News " + tipoFakeNews + " foi duplicada na posição ("
                                                 + novaY + ", " + novaX + ")." + Cores.ANSI_RESET);
+                                iterator.remove();
+                                System.out.println(Cores.ANSI_RED + "Um item foi detruido pela fake news do tipo "
+                                        + fakenews.getTipo() + Cores.ANSI_RESET);
                                 return;
                             }
                         }
                     }
                 }
+            }
         }
     }
 
@@ -155,10 +154,10 @@ public class Tabuleiro {
                 if (caractere == "J1" || caractere == "J2" || caractere == "F1" || caractere == "F2"
                         || caractere == "F3" || caractere == "??" || caractere == "XX")
                     j++;
-                if (caractere == "J1" || caractere == "J2")
-                    System.out.print(Cores.ANSI_GREEN + caractere + Cores.ANSI_RESET);
-                else if (caractere == "F1" || caractere == "F2" || caractere == "F3")
+                if (caractere == "F1" || caractere == "F2" || caractere == "F3")
                     System.out.print(Cores.ANSI_RED + caractere + Cores.ANSI_RESET);
+                else if (caractere == "J1" || caractere == "J2")
+                    System.out.print(Cores.ANSI_GREEN + caractere + Cores.ANSI_RESET);
                 else if (caractere == "??")
                     System.out.print(Cores.ANSI_YELLOW + caractere + Cores.ANSI_RESET);
                 else
@@ -169,7 +168,7 @@ public class Tabuleiro {
     }
 
     private String obterCaractereParaPosicao(int linha, int coluna) {
-        // Verifique se há algum jogador na posição (linha, coluna)
+        // checa por jogador na posicao (linha, coluna)
         for (Jogador jogador : jogadores) {
             if ((jogador.getX() * 2 - 1) == linha && (jogador.getY() * 5 - 3) == coluna) {
                 switch (jogador.getNum()) {
@@ -178,10 +177,10 @@ public class Tabuleiro {
                     case 2:
                         return "J2";
                 }
-                // return "J1";//jogador.getSimbolo();
             }
         }
-        // Verifique se há fakenews na posição (linha, coluna)
+
+        // checa por fakeNews na posicao (linha, coluna)
         for (FakeNews fake : fakeNews) {
             if ((fake.getX() * 2 - 1) == linha && (fake.getY() * 5 - 3) == coluna) {
                 switch (fake.getTipo()) {
@@ -194,29 +193,31 @@ public class Tabuleiro {
                 }
             }
         }
+
+        // checa por item na posicao (linha, coluna)
         for (Item item : itens) {
             if ((item.getX() * 2 - 1) == linha && (item.getY() * 5 - 3) == coluna) {
                 return "??";
             }
         }
 
+        // checa por setor restrito na posicao (linha, coluna)
         for (SetorRestrito setor : setores) {
             if ((setor.getX() * 2 - 1) == linha && (setor.getY() * 5 - 3) == coluna) {
                 return "XX";
             }
         }
-        // Se não houver nenhum jogador ou inimigo na posição (linha, coluna), retorne o
-        // caractere padrão
+
+        // se nao tiver nenhum elemento na posicao retorna o valor padrao
         if (coluna % 5 == 0 && linha % 2 == 0) {
             return "+";
         } else if (coluna % 5 == 0) {
             return "|";
         } else if (linha % 2 == 0) {
             return "-";
-        } else if (linha % 2 != 0) {
+        } else {
             return " ";
-        } else
-            return "x";
+        }
     }
 
     public boolean eliminarJogadorPorFakeNews(Jogador jogador) {
@@ -232,7 +233,7 @@ public class Tabuleiro {
         return false;
     }
 
-    public boolean eliminarJogadorPorSetorRestrito(Jogador jogador, List<SetorRestrito> setores) {
+    public boolean eliminarJogadorPorSetorRestrito(Jogador jogador) {
         for (SetorRestrito setor : setores) {
             if (setor.getX() == jogador.getX() && setor.getY() == jogador.getY()) {
                 // eliminar jogador
@@ -328,23 +329,28 @@ public class Tabuleiro {
             System.out
                     .println(" para: " + fake.getY() + ", " + fake.getX());
 
-            // Pausa a execução por 2 segundos
+            desenharTabuleiro();
             try {
-                Thread.sleep(300);
+                Thread.sleep(800);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void verificacoes(List<Jogador> jogadores, List<FakeNews> fakeNews, List<Item> itens,
-            List<SetorRestrito> setores) {
+    public boolean eliminarJogador(Jogador jogador) {
+        if (eliminarJogadorPorSetorRestrito(jogador) || eliminarJogadorPorFakeNews(jogador)
+                || eliminarJogadorForaDoTabuleiro(jogador))
+            return true;
+        else
+            return false;
+    }
 
+    public void verificacoes() {
         Iterator<Jogador> iterator = jogadores.iterator();
         while (iterator.hasNext()) {
             Jogador jogador = iterator.next();
-            if (eliminarJogadorPorSetorRestrito(jogador, setores) || eliminarJogadorPorFakeNews(jogador)
-                    || eliminarJogadorForaDoTabuleiro(jogador))
+            if (eliminarJogador(jogador))
                 iterator.remove();
         }
 
@@ -352,6 +358,59 @@ public class Tabuleiro {
         eliminarFakeNewsForaDoTabuleiro();
         eliminarFakeNewsSetorRestrito();
         eliminarFakeNewsMesmaPosicao();
+    }
+
+    public void checarItens(Jogador jogador) {
+        Iterator<Item> iterator = itens.iterator();
+        while (iterator.hasNext()) {
+            Item item = iterator.next();
+            if (item.getX() == jogador.getX() && item.getY() == jogador.getY()) {
+                jogador.addItensDoJogador(item);
+                System.out.println("Jogador " + jogador.getNum() + " recebeu o item do tipo: " + item.getTipo());
+                iterator.remove();
+                itens.add(new Item(getObjetos()));
+                return;
+            }
+        }
+    }
+
+    public boolean usarItens(Jogador jogador) {
+        Scanner scanner = new Scanner(System.in);
+        List<Item> itensDoJogador = jogador.getItensDoJogador();
+
+        if (itensDoJogador.isEmpty()) {
+            return false;
+        }
+
+        boolean isValid = false;
+        while (!isValid) {
+            System.out.println("Digite o tipo do item que deseja usar, ou 0 para nao usar nenhum item");
+            String input = scanner.next();
+            int tipoItem;
+
+            try {
+                tipoItem = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                continue;
+            }
+
+            if (tipoItem == 0) {
+                return false;
+            }
+
+            for (Item item : itensDoJogador) {
+                if (item.getTipo() == tipoItem && tipoItem != 4) {
+                    item.usarItem(jogador, item, fakeNews, jogadores);
+                    return true;
+                }
+            }
+            if (tipoItem == 4)
+                System.out.println("Esse item nao pode ser usado");
+            else
+                System.out.println("O jogador nao tem nenhum item desse tipo, por favor digite outro");
+        }
+
+        return false;
     }
 
 }

@@ -47,7 +47,7 @@ public class FakeNews extends Objeto {
 
     private static int gerarTipoAleatorio() {
         Random aleatorio = new Random();
-        return aleatorio.nextInt(2) + 1;
+        return aleatorio.nextInt(3) + 1;
     }
 
     public void moverF1() {
