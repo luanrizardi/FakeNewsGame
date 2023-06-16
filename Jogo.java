@@ -33,7 +33,6 @@ public class Jogo {
         }
 
         Tabuleiro tabuleiro = new Tabuleiro(jogadores, fakenews, itens, setoresRestritos);
-        tabuleiro.desenharTabuleiro();
 
         Scanner input = new Scanner(System.in);
         String entrada = "NULL";
