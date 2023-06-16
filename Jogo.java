@@ -26,7 +26,7 @@ public class Jogo {
         }
 
         List<Item> itens = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 2; i++) {
             Item item = new Item(objetos);
             objetos.add(item);
             itens.add(item);
