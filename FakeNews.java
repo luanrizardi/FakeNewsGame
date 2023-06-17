@@ -9,19 +9,6 @@ public class FakeNews extends Objeto {
         this.tipo = tipo;
     }
 
-    // public Objeto(List<Objeto> objetos) {
-    // boolean unico = false;
-    // while (!unico) {
-    // unico = true;
-    // this.x = generateRandom();
-    // this.y = generateRandom();
-    // for (Objeto objeto : objetos) {
-    // if (objeto.getX() == x && objeto.getY() == y)
-    // unico = false;
-    // }
-    // }
-    // }
-
     public FakeNews(List<Objeto> objetos) {
         boolean unico = false;
         while (!unico) {

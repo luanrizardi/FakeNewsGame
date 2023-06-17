@@ -132,5 +132,4 @@ public class Jogador extends Objeto {
         }
     }
 
-    // item
 }

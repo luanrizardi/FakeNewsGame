@@ -98,8 +98,6 @@ public class Jogo {
                 break; // sai do loop
             }
 
-            // objetos = tabuleiro.getObjetos();
-
             tabuleiro.verificacoes();
             tabuleiro.moverFakeNews();
             tabuleiro.verificacoes();
