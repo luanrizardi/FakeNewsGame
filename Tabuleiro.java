@@ -221,7 +221,7 @@ public class Tabuleiro {
 
             desenharTabuleiro();
             try {
-                Thread.sleep(800);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -280,6 +280,7 @@ public class Tabuleiro {
                                 iterator.remove();
                                 System.out.println(Cores.ANSI_RED + "Um item foi detruido pela fake news do tipo "
                                         + fakenews.getTipo() + Cores.ANSI_RESET);
+                                getItens().add(new Item(getObjetos()));
                                 return;
                             }
                         }
