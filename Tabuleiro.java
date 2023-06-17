@@ -362,7 +362,7 @@ public class Tabuleiro {
 
         boolean isValid = false;
         while (!isValid) {
-            System.out.println("Digite o tipo do item que deseja usar, ou 0 para nao usar nenhum item");
+            System.out.println("Digite o tipo do item que deseja usar, ou 0 para não usar nenhum item");
             String input = scanner.next();
             int tipoItem;
 
@@ -383,9 +383,9 @@ public class Tabuleiro {
                 }
             }
             if (tipoItem == 4)
-                System.out.println("Esse item nao pode ser usado");
+                System.out.println("Esse item não pode ser usado");
             else
-                System.out.println("O jogador nao tem nenhum item desse tipo, por favor digite outro");
+                System.out.println("O jogador não tem nenhum item desse tipo, por favor digite outro");
         }
 
         return false;

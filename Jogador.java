@@ -123,12 +123,12 @@ public class Jogador extends Objeto {
                         break;
                     case 4:
                         System.out.println(
-                                " - Ouvir um boato: Esse item nao pode ser usado, caso um jogador o armazene, no próximo turno o movimento desse jogador é realizado de forma aleatória");
+                                " - Ouvir um boato: Esse item não pode ser usado, caso um jogador o armazene, no próximo turno o movimento desse jogador é realizado de forma aleatória");
                         break;
                 }
             }
         } else {
-            System.out.println("\n ---------O jogador " + +getNum() + " nao tem itens.");
+            System.out.println("\n ---------O jogador " + +getNum() + " não tem itens.");
         }
     }
 }
