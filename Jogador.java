@@ -131,6 +131,4 @@ public class Jogador extends Objeto {
             System.out.println("\n ---------O jogador " + +getNum() + " nao tem itens.");
         }
     }
-
-    // item
 }

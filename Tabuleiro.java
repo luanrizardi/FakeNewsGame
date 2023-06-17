@@ -47,6 +47,17 @@ public class Tabuleiro {
         return this.setores;
     }
 
+    public List<Objeto> getObjetos() {
+        List<Objeto> objetos = new ArrayList<>();
+
+        objetos.addAll(getJogadores());
+        objetos.addAll(getFakeNews());
+        objetos.addAll(getSetores());
+        objetos.addAll(getItens());
+
+        return objetos;
+    }
+
     // Métodos set
     public void setLargura(int largura) {
         this.largura = largura;
@@ -72,76 +83,58 @@ public class Tabuleiro {
         this.setores = setores;
     }
 
-    public List<Objeto> getObjetos() {
-        List<Objeto> objetos = new ArrayList<>();
+    // Metodos tabuleiro
 
-        objetos.addAll(jogadores);
-        objetos.addAll(fakeNews);
-        objetos.addAll(setores);
-        objetos.addAll(itens);
-
-        return objetos;
-    }
-
-    public void destruirFakeNewsForaDoTabuleiro(List<FakeNews> fakeNewsList) {
-        Iterator<FakeNews> iterator = fakeNewsList.iterator();
-        while (iterator.hasNext()) {
-            FakeNews fakeNews = iterator.next();
-
-            int x = fakeNews.getX();
-            int y = fakeNews.getY();
-
-            if (x <= 0 || x > 9 || y <= 0 || y > 9) {
-                iterator.remove();
-                System.out.println(Cores.ANSI_RED + "Fake News do tipo " + fakeNews.getTipo() + " foi destruída!"
-                        + Cores.ANSI_RESET);
-            }
-        }
-    }
-
-    public void duplicarFakeNews() {
-        Iterator<Item> iterator = itens.iterator();
-        while (iterator.hasNext()) {
-            Item item = iterator.next();
-            for (FakeNews fakenews : fakeNews) {
-                if (fakenews.getX() == item.getX() && fakenews.getY() == item.getY()) {
-                    // Verificar as oito posições adjacentes
-                    for (int i = -1; i <= 1; i++) {
-                        for (int j = -1; j <= 1; j++) {
-                            int novaX = fakenews.getX() + i;
-                            int novaY = fakenews.getY() + j;
-                            boolean posicaoLivre = true;
-
-                            // Verificar se a posição não está fora do tabuleiro
-                            if ((novaX > 0 && novaX < 10) && (novaY > 0 && novaY < 10)) {
-                                posicaoLivre = true;
-                            }
-
-                            // Verificar se a posição adjacente está livre
-                            boolean posicaoOcupada = fakeNews.stream()
-                                    .anyMatch(fn -> fn.getX() == novaX && fn.getY() == novaY);
-
-                            if (posicaoOcupada) {
-                                posicaoLivre = false;
-                            }
-
-                            // Se a posição estiver livre, criar uma nova Fake News duplicada
-                            if (posicaoLivre) {
-                                int tipoFakeNews = fakenews.getTipo();
-                                FakeNews novaFakeNews = new FakeNews(tipoFakeNews, novaX, novaY);
-                                fakeNews.add(novaFakeNews);
-                                System.out.println(
-                                        Cores.ANSI_RED + "A Fake News " + tipoFakeNews + " foi duplicada na posição ("
-                                                + novaY + ", " + novaX + ")." + Cores.ANSI_RESET);
-                                iterator.remove();
-                                System.out.println(Cores.ANSI_RED + "Um item foi detruido pela fake news do tipo "
-                                        + fakenews.getTipo() + Cores.ANSI_RESET);
-                                return;
-                            }
-                        }
-                    }
+    private String obterCaractereParaPosicao(int linha, int coluna) {
+        // checa por jogador na posicao (linha, coluna)
+        for (Jogador jogador : getJogadores()) {
+            if ((jogador.getX() * 2 - 1) == linha && (jogador.getY() * 5 - 3) == coluna) {
+                switch (jogador.getNum()) {
+                    case 1:
+                        return "J1";
+                    case 2:
+                        return "J2";
                 }
             }
+        }
+
+        // checa por fakeNews na posicao (linha, coluna)
+        for (FakeNews fake : getFakeNews()) {
+            if ((fake.getX() * 2 - 1) == linha && (fake.getY() * 5 - 3) == coluna) {
+                switch (fake.getTipo()) {
+                    case 1:
+                        return "F1";
+                    case 2:
+                        return "F2";
+                    case 3:
+                        return "F3";
+                }
+            }
+        }
+
+        // checa por item na posicao (linha, coluna)
+        for (Item item : getItens()) {
+            if ((item.getX() * 2 - 1) == linha && (item.getY() * 5 - 3) == coluna) {
+                return "??";
+            }
+        }
+
+        // checa por setor restrito na posicao (linha, coluna)
+        for (SetorRestrito setor : getSetores()) {
+            if ((setor.getX() * 2 - 1) == linha && (setor.getY() * 5 - 3) == coluna) {
+                return "XX";
+            }
+        }
+
+        // se nao tiver nenhum elemento na posicao retorna o valor padrao
+        if (coluna % 5 == 0 && linha % 2 == 0) {
+            return "+";
+        } else if (coluna % 5 == 0) {
+            return "|";
+        } else if (linha % 2 == 0) {
+            return "-";
+        } else {
+            return " ";
         }
     }
 
@@ -167,61 +160,139 @@ public class Tabuleiro {
         }
     }
 
-    private String obterCaractereParaPosicao(int linha, int coluna) {
-        // checa por jogador na posicao (linha, coluna)
-        for (Jogador jogador : jogadores) {
-            if ((jogador.getX() * 2 - 1) == linha && (jogador.getY() * 5 - 3) == coluna) {
-                switch (jogador.getNum()) {
-                    case 1:
-                        return "J1";
-                    case 2:
-                        return "J2";
+    // Manipular fakeNews
+
+    public void eliminarFakeNewsSetorRestrito() {
+        Iterator<FakeNews> iterator = getFakeNews().iterator();
+        while (iterator.hasNext()) {
+            FakeNews fakenews = iterator.next();
+
+            int x = fakenews.getX();
+            int y = fakenews.getY();
+
+            boolean foundMatchingSetor = false;
+
+            for (SetorRestrito setor : getSetores()) {
+                if (setor.getX() == x && setor.getY() == y) {
+                    // eliminar fakenews
+                    System.out.println(Cores.ANSI_RED + "Fake News do tipo " + fakenews.getTipo() + " foi destruída!"
+                            + Cores.ANSI_RESET);
+                    foundMatchingSetor = true;
+                    break;
                 }
             }
-        }
+            if (foundMatchingSetor)
+                iterator.remove(); // Remove the FakeNews object
 
-        // checa por fakeNews na posicao (linha, coluna)
-        for (FakeNews fake : fakeNews) {
-            if ((fake.getX() * 2 - 1) == linha && (fake.getY() * 5 - 3) == coluna) {
-                switch (fake.getTipo()) {
-                    case 1:
-                        return "F1";
-                    case 2:
-                        return "F2";
-                    case 3:
-                        return "F3";
-                }
-            }
-        }
-
-        // checa por item na posicao (linha, coluna)
-        for (Item item : itens) {
-            if ((item.getX() * 2 - 1) == linha && (item.getY() * 5 - 3) == coluna) {
-                return "??";
-            }
-        }
-
-        // checa por setor restrito na posicao (linha, coluna)
-        for (SetorRestrito setor : setores) {
-            if ((setor.getX() * 2 - 1) == linha && (setor.getY() * 5 - 3) == coluna) {
-                return "XX";
-            }
-        }
-
-        // se nao tiver nenhum elemento na posicao retorna o valor padrao
-        if (coluna % 5 == 0 && linha % 2 == 0) {
-            return "+";
-        } else if (coluna % 5 == 0) {
-            return "|";
-        } else if (linha % 2 == 0) {
-            return "-";
-        } else {
-            return " ";
         }
     }
 
+    public void eliminarFakeNewsMesmaPosicao() {
+
+        FakeNews firstDuplicate = null;
+
+        for (FakeNews fk : getFakeNews()) {
+            int x = fk.getX();
+            int y = fk.getY();
+
+            if (firstDuplicate == null) {
+                firstDuplicate = fk;
+            } else if (firstDuplicate.getX() == x && firstDuplicate.getY() == y) {
+                getFakeNews().remove(firstDuplicate);
+                System.out.println(Cores.ANSI_RED + "Fake News do tipo " + firstDuplicate.getTipo()
+                        + " foi destruída! (Colisao de Fake News)"
+                        + Cores.ANSI_RESET);
+                getFakeNews().remove(fk);
+                System.out.println(
+                        Cores.ANSI_RED + "Fake News do tipo " + fk.getTipo() + " foi destruída! (Colisao de Fake News)"
+                                + Cores.ANSI_RESET);
+                break;
+            }
+        }
+    }
+
+    public void moverFakeNews() {
+        for (FakeNews fake : getFakeNews()) {
+            System.out
+                    .print("Fake News " + fake.getTipo() + " se moveu de: " + fake.getY() + ", " + fake.getX());
+            fake.mover();
+            System.out
+                    .println(" para: " + fake.getY() + ", " + fake.getX());
+
+            desenharTabuleiro();
+            try {
+                Thread.sleep(800);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void eliminarFakeNewsForaDoTabuleiro() {
+        Iterator<FakeNews> iterator = getFakeNews().iterator();
+        while (iterator.hasNext()) {
+            FakeNews fakenews = iterator.next();
+
+            int x = fakenews.getX();
+            int y = fakenews.getY();
+
+            if (x <= 0 || x > 9 || y <= 0 || y > 9) {
+                iterator.remove();
+                System.out.println(Cores.ANSI_RED + "Fake News do tipo " + fakenews.getTipo() + " foi destruída!"
+                        + Cores.ANSI_RESET);
+            }
+        }
+    }
+
+    public void duplicarFakeNews() {
+        Iterator<Item> iterator = itens.iterator();
+        while (iterator.hasNext()) {
+            Item item = iterator.next();
+            for (FakeNews fakenews : getFakeNews()) {
+                if (fakenews.getX() == item.getX() && fakenews.getY() == item.getY()) {
+                    // Verificar as oito posições adjacentes
+                    for (int i = -1; i <= 1; i++) {
+                        for (int j = -1; j <= 1; j++) {
+                            int novaX = fakenews.getX() + i;
+                            int novaY = fakenews.getY() + j;
+                            boolean posicaoLivre = true;
+
+                            // Verificar se a posição não está fora do tabuleiro
+                            if ((novaX > 0 && novaX < 10) && (novaY > 0 && novaY < 10)) {
+                                posicaoLivre = true;
+                            }
+
+                            // Verificar se a posição adjacente está livre
+                            boolean posicaoOcupada = fakeNews.stream()
+                                    .anyMatch(fn -> fn.getX() == novaX && fn.getY() == novaY);
+
+                            if (posicaoOcupada) {
+                                posicaoLivre = false;
+                            }
+
+                            // Se a posição estiver livre, criar uma nova Fake News duplicada
+                            if (posicaoLivre) {
+                                int tipoFakeNews = fakenews.getTipo();
+                                fakeNews.add(new FakeNews(tipoFakeNews, novaX, novaY));
+                                System.out.println(
+                                        Cores.ANSI_RED + "A Fake News " + tipoFakeNews + " foi duplicada na posição ("
+                                                + novaY + ", " + novaX + ")." + Cores.ANSI_RESET);
+                                iterator.remove();
+                                System.out.println(Cores.ANSI_RED + "Um item foi detruido pela fake news do tipo "
+                                        + fakenews.getTipo() + Cores.ANSI_RESET);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Manipular jogadores
+
     public boolean eliminarJogadorPorFakeNews(Jogador jogador) {
-        for (FakeNews fakenews : fakeNews) {
+        for (FakeNews fakenews : getFakeNews()) {
             if (fakenews.getX() == jogador.getX() && fakenews.getY() == jogador.getY()) {
                 // eliminar jogador
                 System.out.println(
@@ -234,7 +305,7 @@ public class Tabuleiro {
     }
 
     public boolean eliminarJogadorPorSetorRestrito(Jogador jogador) {
-        for (SetorRestrito setor : setores) {
+        for (SetorRestrito setor : getSetores()) {
             if (setor.getX() == jogador.getX() && setor.getY() == jogador.getY()) {
                 // eliminar jogador
                 System.out.println(
@@ -256,88 +327,6 @@ public class Tabuleiro {
         return false;
     }
 
-    public void eliminarFakeNewsForaDoTabuleiro() {
-        Iterator<FakeNews> iterator = fakeNews.iterator();
-        while (iterator.hasNext()) {
-            FakeNews fakenews = iterator.next();
-
-            int x = fakenews.getX();
-            int y = fakenews.getY();
-
-            if (x <= 0 || x > 9 || y <= 0 || y > 9) {
-                iterator.remove();
-                System.out.println(Cores.ANSI_RED + "Fake News do tipo " + fakenews.getTipo() + " foi destruída!"
-                        + Cores.ANSI_RESET);
-            }
-        }
-    }
-
-    public void eliminarFakeNewsSetorRestrito() {
-        Iterator<FakeNews> iterator = fakeNews.iterator();
-        while (iterator.hasNext()) {
-            FakeNews fakenews = iterator.next();
-
-            int x = fakenews.getX();
-            int y = fakenews.getY();
-
-            boolean foundMatchingSetor = false; // Flag to track if a matching SetorRestrito is found
-
-            for (SetorRestrito setor : setores) {
-                if (setor.getX() == x && setor.getY() == y) {
-                    // eliminar fakenews
-                    System.out.println(Cores.ANSI_RED + "Fake News do tipo " + fakenews.getTipo() + " foi destruída!"
-                            + Cores.ANSI_RESET);
-                    foundMatchingSetor = true; // Set the flag to true
-                    break; // No need to continue iterating over the remaining setores
-                }
-            }
-            if (foundMatchingSetor)
-                iterator.remove(); // Remove the FakeNews object
-
-        }
-    }
-
-    public void eliminarFakeNewsMesmaPosicao() {
-
-        FakeNews firstDuplicate = null;
-
-        for (FakeNews fk : fakeNews) {
-            int x = fk.getX();
-            int y = fk.getY();
-
-            if (firstDuplicate == null) {
-                firstDuplicate = fk;
-            } else if (firstDuplicate.getX() == x && firstDuplicate.getY() == y) {
-                fakeNews.remove(firstDuplicate);
-                System.out.println(Cores.ANSI_RED + "Fake News do tipo " + firstDuplicate.getTipo()
-                        + " foi destruída! (Colisao de Fake News)"
-                        + Cores.ANSI_RESET);
-                fakeNews.remove(fk);
-                System.out.println(
-                        Cores.ANSI_RED + "Fake News do tipo " + fk.getTipo() + " foi destruída! (Colisao de Fake News)"
-                                + Cores.ANSI_RESET);
-                break;
-            }
-        }
-    }
-
-    public void moverFakeNews() {
-        for (FakeNews fake : fakeNews) {
-            System.out
-                    .print("Fake News " + fake.getTipo() + " se moveu de: " + fake.getY() + ", " + fake.getX());
-            fake.mover();
-            System.out
-                    .println(" para: " + fake.getY() + ", " + fake.getX());
-
-            desenharTabuleiro();
-            try {
-                Thread.sleep(800);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public boolean eliminarJogador(Jogador jogador) {
         if (eliminarJogadorPorSetorRestrito(jogador) || eliminarJogadorPorFakeNews(jogador)
                 || eliminarJogadorForaDoTabuleiro(jogador))
@@ -346,19 +335,7 @@ public class Tabuleiro {
             return false;
     }
 
-    public void verificacoes() {
-        Iterator<Jogador> iterator = jogadores.iterator();
-        while (iterator.hasNext()) {
-            Jogador jogador = iterator.next();
-            if (eliminarJogador(jogador))
-                iterator.remove();
-        }
-
-        duplicarFakeNews();
-        eliminarFakeNewsForaDoTabuleiro();
-        eliminarFakeNewsSetorRestrito();
-        eliminarFakeNewsMesmaPosicao();
-    }
+    // Manipular itens
 
     public void checarItens(Jogador jogador) {
         Iterator<Item> iterator = itens.iterator();
@@ -400,7 +377,7 @@ public class Tabuleiro {
 
             for (Item item : itensDoJogador) {
                 if (item.getTipo() == tipoItem && tipoItem != 4) {
-                    item.usarItem(jogador, item, fakeNews, jogadores);
+                    item.usarItem(jogador, item, getFakeNews(), getJogadores());
                     return true;
                 }
             }
@@ -413,4 +390,19 @@ public class Tabuleiro {
         return false;
     }
 
+    // Verificacoes do tabuleiro
+
+    public void verificacoes() {
+        Iterator<Jogador> iterator = getJogadores().iterator();
+        while (iterator.hasNext()) {
+            Jogador jogador = iterator.next();
+            if (eliminarJogador(jogador))
+                iterator.remove();
+        }
+
+        duplicarFakeNews();
+        eliminarFakeNewsForaDoTabuleiro();
+        eliminarFakeNewsSetorRestrito();
+        eliminarFakeNewsMesmaPosicao();
+    }
 }
