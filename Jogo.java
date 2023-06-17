@@ -3,6 +3,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
+// Luan Carlo Rizardi GRR20205648
+// Ludwig - GRR20191284
+
 public class Jogo {
     public static void main(String args[]) {
         List<Jogador> jogadores = new ArrayList<>();
